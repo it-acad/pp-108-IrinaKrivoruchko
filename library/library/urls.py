@@ -21,13 +21,13 @@ from authentication.views import home
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    # path("", lambda request: redirect("login")),
-    # path("", lambda request: redirect("login") if not request.path.startswith("/admin/") else None),
-    # path("auth/login", auth_views.LoginView.as_view(template_name="authentication/templates/auth/login.html"), name="login"),
+    path("", lambda request: redirect("login")),
+    path("auth/login", auth_views.LoginView.as_view(template_name="authentication/templates/auth/login.html"), name="login"),
     path("auth/", include("authentication.urls")),
     path("authors/", include("author.urls")),
-
+    path('book/', include('book.urls')),
     path("home/", home, name="home"),
+    path("order/", include('order.urls')),
 
 
 ]
