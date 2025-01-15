@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from .models import CustomUser
 
 
-def register(request):
+def register(self, request):
     if request.method == "POST":
         email = request.POST.get("email")
         password = request.POST.get("password")
@@ -22,7 +22,7 @@ def register(request):
             role=role
         )
         user.is_active = True
-        user.save()
+        user.save(using=self._db)
         login(request, user)
         return redirect("login")
     return render(request, "auth/register.html")

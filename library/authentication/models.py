@@ -67,9 +67,9 @@ class CustomUser(AbstractBaseUser):
         param is_active: user role, default value False
         type updated_at: bool
     """
-    first_name = models.CharField(max_length=20, default=None)
-    last_name = models.CharField(max_length=20, default=None)
-    middle_name = models.CharField(max_length=20, default=None)
+    first_name = models.CharField(max_length=20, default=None, blank=True, null=True)
+    last_name = models.CharField(max_length=20, default=None, blank=True, null=True)
+    middle_name = models.CharField(max_length=20, default=None, blank=True, null=True)
     email = models.CharField(max_length=100, unique=True, default=None)
     password = models.CharField(null=False, max_length=255)
     created_at = models.DateTimeField(editable=False, auto_now_add=True)
@@ -81,6 +81,7 @@ class CustomUser(AbstractBaseUser):
     id = models.AutoField(primary_key=True)
 
     USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
     objects = CustomUserManager()
 
     def __str__(self):
@@ -90,7 +91,8 @@ class CustomUser(AbstractBaseUser):
                  user email, user password, user updated_at, user created_at,
                  user role, user is_active
         """
-        return f"'id': {self.id}, 'first_name': '{self.first_name}', 'middle_name': '{self.middle_name}', 'last_name': '{self.last_name}', 'email': '{self.email}', 'created_at': {int(self.created_at.timestamp())}, 'updated_at': {int(self.updated_at.timestamp())}, 'role': {self.role}, 'is_active': {self.is_active}"  # 'password': '{self.password}', \
+        # return f"'id': {self.id}, 'first_name': '{self.first_name}', 'middle_name': '{self.middle_name}', 'last_name': '{self.last_name}', 'email': '{self.email}', 'created_at': {int(self.created_at.timestamp())}, 'updated_at': {int(self.updated_at.timestamp())}, 'role': {self.role}, 'is_active': {self.is_active}"  # 'password': '{self.password}', \
+        return f"User ID: {self.id}"
 
     def __repr__(self):
         """
@@ -232,3 +234,9 @@ class CustomUser(AbstractBaseUser):
         returns str role name
         """
         return ROLE_CHOICES[self.role][1]
+
+    def has_perm(self, perm, obj=None):
+        return True
+
+    def has_module_perms(self, app_label):
+        return True
